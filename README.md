@@ -1,5 +1,5 @@
 # Quotes
-Quotes webpage using quotes API
+Quotes for the day Webpage.
 
 You can Tweet the quotes directly through this page using tweet now button.
 
