@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quotes</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Andika+New+Basic:ital@1&display=swap');
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'Andika New Basic', sans-serif;
+        }
+        .container{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            background-color: rgb(74, 74, 187);
+        }
+        .inner{
+         border: 1px solid white;
+         border-radius: 5px;
+         padding: 50px;
+         position: relative;
+         font-size: 25px;
+        }
+        
+        .inner #quotes{
+            color: white;
+        }
+        .inner .tweet-btn{
+            padding: 5px;
+            background-color: skyblue;
+            color: white;
+            cursor: pointer;
+        }
+        .inner .author{
+            color: white;
+        }
+        .inner .button{
+            text-align: center;
+           
+        }
+        .inner .button #btn{
+            background-color: rgb(12, 10, 27);
+            color: white;
+            padding: 5px;
+             cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="inner">
+            <h2 style="text-align:center;color: white;">Quote of the day</h2>
+            <p class="number">
+                <button class="tweet-btn" id="tweetMe"><i class="fab fa-twitter" title="tweetMe" ></i>TweetNow</button>
+                <!--  Tweet Now</i> -->
+            </p>
+            <div class="text">
+                <i class="start-quote fas fa-quote-left"></i>
+                <p id="quotes" class="quotes"></p>
+                <p id="author" class="author"></p>
+            </div>
+            <div class="button">
+                <button id="btn">New Quotes</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const quotes = document.getElementById("quotes");
+        const author = document.getElementById("author");
+        const btn = document.getElementById("btn");
+        const tweetMe = document.getElementById("tweetMe");
+
+        let realData = "";
+        let quotesData = "";
+
+        const tweetNow = () => {
+            let tweetPost = `https://twitter.com/intent/tweet?text=${quotesData.text}`;
+            window.open(tweetPost);
+        }
+
+        const getNewQuotes = () => {
+            let randomNumber = Math.floor(Math.random() * 10); //Random number between 0 to 1
+            quotesData = realData[randomNumber];
+            quotes.innerText = `${quotesData.text}`;
+            quotesData == null ? (author.innerText = "unknown") : (author.innerText = `By- ${quotesData.author}`);
+
+        }
+
+        const getQuotes = async () => {
+            const api = "https://type.fit/api/quotes";
+            try {
+                const data = await fetch(api);
+                realData = await data.json();
+                getNewQuotes();
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        btn.addEventListener("click", getNewQuotes);
+        tweetMe.addEventListener("click", tweetNow);
+        getQuotes();
+    </script>
+</body>
+
+</html>
